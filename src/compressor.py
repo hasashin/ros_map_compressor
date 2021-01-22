@@ -2,7 +2,7 @@
 import rospy
 from nav_msgs.msg import OccupancyGrid
 from sensor_msgs.msg import PointCloud2
-from map_compressor.msg import CompressedMap, CompressedPontCloud2
+from map_compressor.msg import CompressedMap, CompressedPontcloud2
 import zlib
 import base64
 import sys
@@ -10,7 +10,7 @@ import sys
 current_map = OccupancyGrid()
 current_pointcloud = PointCloud2()
 compressed_map = CompressedMap()
-compressed_pointcloud = CompressedPontCloud2()
+compressed_pointcloud = CompressedPontcloud2()
 
 def map_callback(the_map):
     global current_map 
@@ -30,7 +30,7 @@ def pointcloud_callback(the_pointcloud):
     global current_pointcloud
     global compressed_pointcloud
     current_pointcloud = the_pointcloud
-    compressed_pointcloud = CompressedPontCloud2()
+    compressed_pointcloud = CompressedPontcloud2()
     compressed_pointcloud.header = the_pointcloud.header
     compressed_pointcloud.height = the_pointcloud.height
     compressed_pointcloud.width = the_pointcloud.width
@@ -65,7 +65,7 @@ else:
 sub_map = rospy.Subscriber('/map', OccupancyGrid, callback=map_callback)
 pub_map = rospy.Publisher('/compressed_map', CompressedMap, queue_size=2)
 sub_point = rospy.Subscriber('', PointCloud2, callback=pointcloud_callback)
-pub_point = rospy.Publisher('/compressed_pointcloud2', CompressedPontCloud2, queue_size=2)
+pub_point = rospy.Publisher('/compressed_pointcloud2', CompressedPontcloud2, queue_size=2)
 rospy.init_node('map_compressor')
 rate = rospy.Rate(1)
 

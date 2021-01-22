@@ -52,7 +52,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   CompressedMap.msg
-  CompressedPointcloud2
+  CompressedPointcloud2.msg
 )
 
 ## Generate services in the 'srv' folder

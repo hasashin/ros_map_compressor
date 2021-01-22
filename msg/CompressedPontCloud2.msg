@@ -1,0 +1,9 @@
+Header header
+uint32 height
+uint32 width
+string[] fields
+bool is_bigendian
+uint32 point_step
+uint32 row_step
+string data
+bool is_dense

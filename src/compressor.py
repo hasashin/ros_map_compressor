@@ -75,7 +75,7 @@ rospy.loginfo("Map Compressor started")
 
 while not rospy.is_shutdown():
     pub_map.publish(compressed_map)
-    pub_map.publish(compressed_pointcloud)
+    pub_point.publish(compressed_pointcloud)
     rate.sleep()
 
 rospy.loginfo("Map Compressor is stopping")

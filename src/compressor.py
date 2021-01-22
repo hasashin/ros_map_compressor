@@ -56,6 +56,8 @@ def pointcloud_callback(the_pointcloud):
     compressed_data = zlib.compress(str(bytearray(new_data)))
     compressed_pointcloud.data = base64.b64encode(compressed_data)
 
+poincloud_topic = ''
+
 if len(sys.argv)-1 >= 1:
     poincloud_topic = sys.argv[1]
 else:
@@ -64,7 +66,7 @@ else:
 
 sub_map = rospy.Subscriber('/map', OccupancyGrid, callback=map_callback)
 pub_map = rospy.Publisher('/compressed_map', CompressedMap, queue_size=2)
-sub_point = rospy.Subscriber('', PointCloud2, callback=pointcloud_callback)
+sub_point = rospy.Subscriber(poincloud_topic, PointCloud2, callback=pointcloud_callback)
 pub_point = rospy.Publisher('/compressed_pointcloud2', CompressedPointcloud2, queue_size=2)
 rospy.init_node('map_compressor')
 rate = rospy.Rate(1)

@@ -39,17 +39,21 @@ def pointcloud_callback(the_pointcloud):
     compressed_pointcloud.row_step = the_pointcloud.row_step
     compressed_pointcloud.is_dense - the_pointcloud.is_dense
     rospy.loginfo('Compressing pointcloud for {}'.format(the_pointcloud.header.frame_id))
-    new_fields = []
-    for field in the_pointcloud.fields:
-        compressed_field = field.name
-        compressed_field_data  = bytearray()
-        compressed_field_data.append(field.offset)
-        compressed_field_data.append(field.datatype)
-        compressed_field_data.append(field.count)
-        temp = zlib.compress(str(compressed_field_data))
-        compressed_field = compressed_field + base64.b64encode(temp)
-        new_fields.append(compressed_field)
-    compressed_pointcloud.fields = new_fields
+    #
+    #    Screw it, client doesn't need point fields
+    #
+    # new_fields = []
+    # for field in the_pointcloud.fields:
+    #     compressed_field = field.name
+    #     compressed_field_data  = bytearray()
+    #     compressed_field_data.append(field.offset)
+    #     compressed_field_data.append(field.datatype)
+    #     compressed_field_data.append(field.count)
+    #     temp = zlib.compress(str(compressed_field_data))
+    #     compressed_field = compressed_field + base64.b64encode(temp)
+    #     new_fields.append(compressed_field)
+    # compressed_pointcloud.fields = new_fields
+    compressed_pointcloud.fields = []
     new_data = []
     for entry in the_pointcloud.data:
         new_data.append(entry)

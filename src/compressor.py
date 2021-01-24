@@ -57,6 +57,7 @@ def pointcloud_callback(the_pointcloud):
     new_data = []
     for entry in the_pointcloud.data:
         new_data.append(entry)
+    print len(data)
     compressed_data = zlib.compress(str(bytearray(new_data)))
     compressed_pointcloud.data = base64.b64encode(compressed_data)
 

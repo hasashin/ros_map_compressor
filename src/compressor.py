@@ -7,15 +7,11 @@ import zlib
 import base64
 import sys
 
-current_map = OccupancyGrid()
-current_pointcloud = PointCloud2()
 compressed_map = CompressedMap()
 compressed_pointcloud = CompressedPointcloud2()
 
 def map_callback(the_map):
-    global current_map 
     global compressed_map
-    current_map = the_map
     compressed_map = CompressedMap()
     compressed_map.header = the_map.header
     compressed_map.info = the_map.info
@@ -27,17 +23,15 @@ def map_callback(the_map):
     compressed_map.data = base64.b64encode(compressed_data)
 
 def pointcloud_callback(the_pointcloud):
-    global current_pointcloud
     global compressed_pointcloud
-    current_pointcloud = the_pointcloud
-    compressed_pointcloud = CompressedPointcloud2()
-    compressed_pointcloud.header = the_pointcloud.header
-    compressed_pointcloud.height = the_pointcloud.height
-    compressed_pointcloud.width = the_pointcloud.width
-    compressed_pointcloud.is_bigendian = the_pointcloud.is_bigendian
-    compressed_pointcloud.point_step = the_pointcloud.point_step
-    compressed_pointcloud.row_step = the_pointcloud.row_step
-    compressed_pointcloud.is_dense - the_pointcloud.is_dense
+    compressed_pointcloud_temp = CompressedPointcloud2()
+    compressed_pointcloud_temp.header = the_pointcloud.header
+    compressed_pointcloud_temp.height = the_pointcloud.height
+    compressed_pointcloud_temp.width = the_pointcloud.width
+    compressed_pointcloud_temp.is_bigendian = the_pointcloud.is_bigendian
+    compressed_pointcloud_temp.point_step = the_pointcloud.point_step
+    compressed_pointcloud_temp.row_step = the_pointcloud.row_step
+    compressed_pointcloud_temp.is_dense - the_pointcloud.is_dense
     rospy.loginfo('Compressing pointcloud for {}'.format(the_pointcloud.header.frame_id))
     #
     #    Screw it, client doesn't need point fields
@@ -52,14 +46,14 @@ def pointcloud_callback(the_pointcloud):
     #     temp = zlib.compress(str(compressed_field_data))
     #     compressed_field = compressed_field + base64.b64encode(temp)
     #     new_fields.append(compressed_field)
-    # compressed_pointcloud.fields = new_fields
-    compressed_pointcloud.fields = []
+    # compressed_pointcloud_temp.fields = new_fields
+    compressed_pointcloud_temp.fields = []
     new_data = []
     for entry in the_pointcloud.data:
         new_data.append(entry)
-    print len(data)
     compressed_data = zlib.compress(str(bytearray(new_data)))
-    compressed_pointcloud.data = base64.b64encode(compressed_data)
+    compressed_pointcloud_temp.data = base64.b64encode(compressed_data)
+    compressed_pointcloud = compressed_pointcloud_temp
 
 poincloud_topic = ''
 
